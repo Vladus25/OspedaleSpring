@@ -1,1 +1,40 @@
-<p>query works!</p>
+<div class="container">
+  <h2>Ricerca Ospedale</h2>
+
+  <div class="mb-3">
+    <label for="selectOption" class="form-label">Seleziona un'opzione di Ricerca</label>
+    <select class="form-select" id="selectOption" [(ngModel)]="selectedOption" name="selectOption">
+      <option *ngFor="let block of blocks" [value]="block.value">{{ block.label }}</option>
+    </select>
+  </div>
+
+
+  <div [ngSwitch]="selectedOption">
+
+    <!-- Ricerca dato un medico visualizzare il reparto di appartenenza -->
+    <div *ngSwitchCase="'1'">
+      <form (ngSubmit)=" ricercaReparto()">
+        <div class="mb-3">
+          <label for="id" class="form-label">id:</label>
+          <input type="number" class="form-control" id="medicoId" [(ngModel)]="medicoId" name="medicoId" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Cerca</button>
+
+        <div class="mt-4" *ngIf="datiRepartoMedico">
+          <h4>Risultato:</h4>
+          <div *ngFor="let dati of datiRepartoMedico">
+            <div class="card mb-3">
+              <div class="card-body">
+                <h5 class="card-title">Nome: {{ dati[7] }}</h5>
+                <h5 class="card-title">Cognome: {{ dati[4]}}</h5>
+                <h5 class="card-title">Reparto: {{ dati[1] }}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+

@@ -30,4 +30,8 @@ export class ConnectionDBService {
     return this.http.put(`${this.baseUrl}/paziente/update/${id}`, paziente);
   }
 
+  ricerca1(medicoId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/medico/find/ricerca1/${medicoId}`);
+  }
+
 }
