@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Modifica Paziente</h2>
+<form (ngSubmit)="submitForm()" #pazienteForm="ngForm">
+  <mat-form-field>
+    <input matInput placeholder="Nome" [(ngModel)]="paziente.nome" name="nome" required>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Cognome" [(ngModel)]="paziente.cognome" name="cognome" required>
+  </mat-form-field>
+  <!-- Add other input fields to display and edit patient data -->
+  <div mat-dialog-actions>
+    <button mat-button (click)="cancel()">Annulla</button>
+    <button mat-button type="submit" [disabled]="!pazienteForm.valid">Salva</button>
+  </div>
+</form>

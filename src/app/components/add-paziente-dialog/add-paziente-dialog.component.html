@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Aggiungi Paziente</h2>
+<form (ngSubmit)="submitForm()" #pazienteForm="ngForm">
+  <mat-form-field>
+    <input matInput placeholder="Nome" [(ngModel)]="paziente.nome" name="nome" required>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Cognome" [(ngModel)]="paziente.cognome" name="cognome" required>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Codice Fiscale" [(ngModel)]="paziente.codFis" name="codFis" required>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Id Reparto" [(ngModel)]="paziente.idReparto.id" name="idReparto" required>
+  </mat-form-field>
+  <!-- Aggiungi altri campi di input per i dati del paziente -->
+  <div mat-dialog-actions>
+    <button mat-button (click)="cancel()">Annulla</button>
+    <button mat-button type="submit" [disabled]="!pazienteForm.valid">Aggiungi</button>
+  </div>
+</form>

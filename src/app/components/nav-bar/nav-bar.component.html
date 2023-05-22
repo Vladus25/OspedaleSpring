@@ -1,0 +1,21 @@
+<nav class="navbar navbar-dark bg-dark navbar-expand-md">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="selectedNavItem === 'Home'" (click)="selectNavItem('Home')" routerLink="/Home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="selectedNavItem === 'Pazienti'" (click)="selectNavItem('Pazienti')" routerLink="/Pazienti">Pazienti</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="selectedNavItem === 'Query'" (click)="selectNavItem('Query')" routerLink="/Query">Ricerche</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,29 @@
+<div class="container">
+  <h2>Pazienti</h2>
+  <button mat-raised-button color="primary" (click)="addPaziente()">Aggiungi</button>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Cognome</th>
+        <th>Elimina</th>
+        <th>Modifica</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let paziente of pazienti">
+        <td>{{ paziente.id }}</td>
+        <td>{{ paziente.nome }}</td>
+        <td>{{ paziente.cognome }}</td>
+        <td>
+          <button class="btn btn-danger" (click)="deletePaziente(paziente.id)">Elimina</button>
+        </td>
+        <td>
+          <button mat-raised-button color="primary" (click)="modificaPaziente(paziente.id, paziente)">Modifica</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
