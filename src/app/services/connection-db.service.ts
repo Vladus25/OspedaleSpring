@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 
@@ -32,6 +32,42 @@ export class ConnectionDBService {
 
   ricerca1(medicoId: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/medico/find/ricerca1/${medicoId}`);
+  }
+
+  ricerca2(pazienteId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/paziente/dati/${pazienteId}`);
+  }
+
+  ricerca3(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/esame/all`);
+  }
+
+  ricerca4(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/visita/all`);
+  }
+
+  getPazientiEsameData(nomeEsame: string, dataInizio: string, dataFine: string) {
+    return this.http.get<any[]>(`${this.baseUrl}/paziente/esami/per-data`, {
+      params: {
+        nomeEsame,
+        dataInizio,
+        dataFine
+      }
+    });
+  }
+
+  uploadPdf(id: number, file: File): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+    return this.http.post<any>(`${this.baseUrl}/paziente/upload-pdf/${id}`, formData);
+  }
+
+  downloadPdf(id: number): Observable<HttpResponse<Blob>> {
+    const url = `${this.baseUrl}/paziente/download-pdf/${id}`;
+    return this.http.get(url, {
+      responseType: 'blob',
+      observe: 'response'
+    });
   }
 
 }

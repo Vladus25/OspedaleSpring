@@ -18,6 +18,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AddPazienteDialogComponent } from './components/add-paziente-dialog/add-paziente-dialog.component';
 import { ModificaPazienteDialogComponent } from './components/modifica-paziente-dialog/modifica-paziente-dialog.component';
 import { QueryComponent } from './components/query/query.component';
+import { UniquePazientePipe } from './pipe/unique-paziente.pipe';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { QueryComponent } from './components/query/query.component';
     PazientiComponent,
     AddPazienteDialogComponent,
     ModificaPazienteDialogComponent,
-    QueryComponent
+    QueryComponent,
+    UniquePazientePipe
   ],
   imports: [
     BrowserModule,

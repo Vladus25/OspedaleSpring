@@ -20,21 +20,182 @@
         </div>
         <button type="submit" class="btn btn-primary">Cerca</button>
 
-        <div class="mt-4" *ngIf="datiRepartoMedico">
+        <div class="mt-4" *ngIf="datiRepartoMedico && datiRepartoMedico.length > 0">
           <h4>Risultato:</h4>
-          <div *ngFor="let dati of datiRepartoMedico">
-            <div class="card mb-3">
-              <div class="card-body">
-                <h5 class="card-title">Nome: {{ dati[7] }}</h5>
-                <h5 class="card-title">Cognome: {{ dati[4]}}</h5>
-                <h5 class="card-title">Reparto: {{ dati[1] }}</h5>
-              </div>
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Nome: {{ datiRepartoMedico[7] }}</h5>
+              <h5 class="card-title">Cognome: {{ datiRepartoMedico[4] }}</h5>
+              <h5 class="card-title">Reparto: {{ datiRepartoMedico[1] }}</h5>
             </div>
           </div>
         </div>
       </form>
     </div>
 
+    <!-- Ricerca Dato un paziente, visualizzare tutti gli esami e visite che ha effettuato e se id recovero e presente, visualizzare il nome del reparto e il medico curante -->
+    <div *ngSwitchCase="'2'">
+      <form (ngSubmit)="ricercaEsamiVisiteRepartoMedico()">
+        <div class="mb-3">
+          <label for="pazienteId" class="form-label">ID Paziente:</label>
+          <input type="number" class="form-control" id="pazienteId" [(ngModel)]="pazienteId" name="pazienteId" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Cerca</button>
+
+        <div class="mt-4" *ngIf="datiEsamiVisiteRepartoMedico">
+          <h4>Risultato:</h4>
+          <div class="card mb-3" *ngFor="let dati of datiEsamiVisiteRepartoMedico | uniquePaziente: 'pazienteId'">
+            <div class="card-body">
+              <h5 class="card-title">Paziente: {{ dati.nomePaziente }} {{ dati.cognomePaziente }}</h5>
+              <h5 class="card-title">Codice Fiscale: {{ dati.codFisPaziente }}</h5>
+              <h5 class="card-title">Sesso: {{ dati.sesso }}</h5>
+              <h5 class="card-title">Data di nascita: {{ dati.data_n }}</h5>
+              <h5 class="card-title">Luogo di nascita: {{ dati.luogo_n }}</h5>
+              <h5 class="card-title" *ngIf="dati.id_reparto">Reparto: {{ dati.nomeReparto }}</h5>
+              <h5 class="card-title" *ngIf="dati.id_reparto">Medico: {{ dati.nomeMedico }} {{ dati.cognomeMedico }}</h5>
+            </div>
+          </div>
+
+          <h4>Esami:</h4>
+          <div class="card mb-3" *ngFor="let dati of datiEsamiVisiteRepartoMedico | uniquePaziente: 'esameId'">
+            <div class="card-body">
+              <h5 class="card-title">Esame: {{ dati.nomeEsame }}</h5>
+              <h5 class="card-title">Data Esame: {{ dati.dataEsame }}</h5>
+              <h5 class="card-title">Esito Esame: {{ dati.esitoEsame }}</h5>
+            </div>
+          </div>
+
+          <h4>Visite:</h4>
+          <div class="card mb-3" *ngFor="let dati of datiEsamiVisiteRepartoMedico | uniquePaziente: 'visitaId'">
+            <div class="card-body">
+              <h5 class="card-title">Visita: {{ dati.nomeVisita }}</h5>
+              <h5 class="card-title">Data Visita: {{ dati.dataVisita }}</h5>
+              <h5 class="card-title">Esito Visita: {{ dati.esitoVisita }}</h5>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Ricerca per visualizzare la lista di tutti gli esami che è possibile effettuare -->
+    <div *ngSwitchCase="'3'">
+      <div class="mt-4" *ngIf="datiEsami">
+        <h4>Risultato:</h4>
+        <div *ngFor="let esame of datiEsami">
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Esame: {{ esame.nome }}</h5>
+              <h5 class="card-title">Prezzo: {{ esame.prezzo }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ricerca per visualizzare tutte le visite che è possibile effettuare -->
+    <div *ngSwitchCase="'4'">
+      <div class="mt-4" *ngIf="datiVisite">
+        <h4>Risultato:</h4>
+        <div *ngFor="let visita of datiVisite">
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Corso-Laurea: {{ visita.nome }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ricerca per ogni paziente consentire il download del referto relativo all esito -->
+    <div *ngSwitchCase="'5'">
+
+      <form (ngSubmit)="uploadPdf(pazienteId)">
+        <h4>Upload file paziente</h4>
+        <div class="mb-2">
+          <label for="pazienteId" class="form-label">ID Paziente:</label>
+          <input type="number" class="form-control" id="pazienteId" [(ngModel)]="pazienteId" name="pazienteId" required>
+        </div>
+        <div class="mb-2">
+          <label for="pdfFile" class="form-label">Carica File PDF:</label>
+          <input type="file" class="form-control" id="pdfFile" (change)="onFileSelected($event)">
+        </div>
+        <button type="submit" class="btn btn-primary">Carica PDF</button>
+      </form>
+
+      <!-- Download PDF Section -->
+      <div class="mt-4">
+        <h4>Download file paziente</h4>
+        <div class="form-group mb-2">
+          <label for="pazienteId">Paziente ID:</label>
+          <input type="number" class="form-control" id="pazienteId" [(ngModel)]="pazienteId">
+        </div>
+        <button class="btn btn-primary" (click)="downloadPdf()">Download PDF</button>
+      </div>
+
+    </div>
+
+    <!-- Dato un intervallo temporale e un esame/ visita, visualizzare tutti i pazienti che lo hanno effettuato, data ed esito -->
+    <div *ngSwitchCase="'6'">
+      <div class="container">
+        <h1 class="mt-5">Risultati Pazienti per Esame e Intervallo Temporale</h1>
+
+        <div class="my-4">
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Data Inizio</label>
+            <div class="col-sm-4">
+              <input type="date" class="form-control" [(ngModel)]="dataInizio">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Data Fine</label>
+            <div class="col-sm-4">
+              <input type="date" class="form-control" [(ngModel)]="dataFine">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Esame</label>
+            <div class="col-sm-4">
+              <select class="form-control" [(ngModel)]="nomeEsame">
+                <option *ngFor="let esame of datiEsami" [value]="esame.nome">{{ esame.nome}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <button class="btn btn-primary"
+              (click)="getPazientiEsameData(nomeEsame, dataInizio, dataFine)">Cerca</button>
+          </div>
+        </div>
+
+        <div *ngIf="datiPazienteEsameData && datiPazienteEsameData.length > 0" class="mt-4">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Cognome</th>
+                <th>Data</th>
+                <th>Esito</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let risultato of datiPazienteEsameData">
+                <td>{{ risultato.nome }}</td>
+                <td>{{ risultato.cognome }}</td>
+                <td>{{ risultato.data }}</td>
+                <td>{{ risultato.esito }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngIf="datiPazienteEsameData && datiPazienteEsameData.length === 0" class="mt-4">
+          <p>Nessun risultato trovato.</p>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 </div>
-
