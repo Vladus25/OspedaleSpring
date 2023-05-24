@@ -1,5 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ConnectionDBService } from 'src/app/services/connection-db.service';
 
 @Component({
@@ -16,7 +17,7 @@ export class QueryComponent {
   pazienteId!: number;
   datiEsamiVisiteRepartoMedico: any[] = [];
 
-  datiEsami: any[] = [];
+  datiEsami: any;
   datiVisite: any[] = [];
 
   datiPazienteEsameData: any[] = [];
@@ -25,7 +26,6 @@ export class QueryComponent {
   dataFine!:string;
 
   selectedFile!: File;
-
 
   blocks: any[] = [
     { value: '1', label: 'Ricerca dato un medico visualizzare il reparto di appartenenza'},
@@ -39,7 +39,7 @@ export class QueryComponent {
   constructor(private http: ConnectionDBService) { }
 
   ngOnInit(): void {
-    this.ricercaEsami();
+    this.datiEsami = this.http.ricerca3();
     this.ricercaVisite();
   }
 
@@ -52,12 +52,6 @@ export class QueryComponent {
   ricercaEsamiVisiteRepartoMedico() {
     this.http.ricerca2(this.pazienteId).subscribe(data => {
       this.datiEsamiVisiteRepartoMedico = data;
-    });
-  }
-
-  ricercaEsami() {
-    this.http.ricerca3().subscribe(data => {
-      this.datiEsami = data;
     });
   }
 

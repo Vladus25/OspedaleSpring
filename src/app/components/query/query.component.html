@@ -79,9 +79,9 @@
 
     <!-- Ricerca per visualizzare la lista di tutti gli esami che è possibile effettuare -->
     <div *ngSwitchCase="'3'">
-      <div class="mt-4" *ngIf="datiEsami">
+      <div class="mt-4" *ngIf="datiEsami" >
         <h4>Risultato:</h4>
-        <div *ngFor="let esame of datiEsami">
+        <div *ngFor="let esame of datiEsami | async">
           <div class="card mb-3">
             <div class="card-body">
               <h5 class="card-title">Esame: {{ esame.nome }}</h5>
@@ -99,7 +99,7 @@
         <div *ngFor="let visita of datiVisite">
           <div class="card mb-3">
             <div class="card-body">
-              <h5 class="card-title">Corso-Laurea: {{ visita.nome }}</h5>
+              <h5 class="card-title">Visita: {{ visita.nome }}</h5>
             </div>
           </div>
         </div>
